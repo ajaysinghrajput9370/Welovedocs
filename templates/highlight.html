@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container text-center mt-5">
+
+  <h2>Select Tool & Upload Files</h2>
+
+  <!-- Tool radio buttons -->
+  <div style="margin:30px 0;">
+    <input type="radio" name="tool" value="uan" id="uan" onclick="showUpload()" checked>
+    <label for="uan">UAN Highlight</label>
+
+    <input type="radio" name="tool" value="esic" id="esic" onclick="showUpload()">
+    <label for="esic">ESIC Highlight (full row)</label>
+  </div>
+
+  <!-- Upload Section -->
+  <form method="POST" enctype="multipart/form-data" id="upload-form" style="display:inline-block;">
+    <input type="hidden" name="tool" id="selected-tool" value="uan">
+
+    <label>Select PDF</label>
+    <input type="file" name="pdf" accept=".pdf" required><br><br>
+
+    <label>Select Excel</label>
+    <input type="file" name="excel" accept=".xls,.xlsx" required><br><br>
+
+    <button type="submit" style="padding:10px 30px; font-size:16px; background:#28a745; color:white; border-radius:8px;">Highlight</button>
+  </form>
+
+  <!-- Download Links -->
+  {% if result_pdf %}
+  <div style="margin-top:30px;">
+    <a href="{{ url_for('static', filename='results/' + result_pdf) }}" download>Download Highlighted PDF</a><br>
+    <a href="{{ url_for('static', filename='results/' + not_found_excel) }}" download>Download Not Found Excel</a>
+  </div>
+  {% endif %}
+
+</div>
+
+<script>
+function showUpload() {
+    const tool = document.querySelector('input[name="tool"]:checked').value;
+    document.getElementById('selected-tool').value = tool;
+}
+</script>
+{% endblock %}
